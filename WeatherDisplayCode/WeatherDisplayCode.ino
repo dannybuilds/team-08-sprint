@@ -15,7 +15,6 @@
 
 #define SUN_PIN 14    // drives sun pictogram LED
 #define RAIN_PIN 15   // drives rain pictogram LED
-#define SNOW_PIN 33   // drives snow pictogram LED
 #define CLOUD_PIN 32  // drives cloud pictogram LED
 
 
@@ -29,12 +28,11 @@ int todaysHigh = 0;                         // declares and initilizes variable 
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     lcd.begin(16, 2);            // (LCD rows, LCD cols)
 
     pinMode(SUN_PIN, OUTPUT);    // initialize pin as an output
     pinMode(RAIN_PIN, OUTPUT);   // initialize pin as an output
-    pinMode(SNOW_PIN, OUTPUT);   // initialize pin as an output
     pinMode(CLOUD_PIN, OUTPUT);  // initialize pin as an output
 
     lcd.setCursor(0, 0);
@@ -107,43 +105,35 @@ void handleCondition(AdafruitIO_Data *data)
     if (forecast.equalsIgnoreCase(rain) || forecast.equalsIgnoreCase(lightrain) || forecast.equalsIgnoreCase(rainshower))
     {
         Serial.println("rain in the forecast today");
-        lcd.setCursor(0, 0);                           // configured so we get a new line for the high temp print
+        lcd.setCursor(0, 0);                                   // configured so we get a new line for the high temp print
         lcd.print("rain in the forecast today");
-        lcd.setCursor(1, 0);                           // configured so we get a new line for the high temp print
+        lcd.setCursor(1, 0);                                   // configured so we get a new line for the high temp print
         lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(RAIN_PIN, HIGH);                   // sets rain pin to HIGH
-    }
-
-    // if there is snow in the forcast light up snow LED and print forecast to screen
-    if (forecast.equalsIgnoreCase(snow) || forecast.equalsIgnoreCase(rainandsnow) || forecast.equalsIgnoreCase(snowshower))
-    {
-        Serial.println("snow in the forecast today");
-        lcd.setCursor(0, 0);                           // configured so we get a new line for the high temp print
-        lcd.print("snow in the forecast today");
-        lcd.setCursor(1, 0);                           // configured so we get a new line for the high temp print
-        lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(SNOW_PIN, HIGH);                   // sets snow pin to HIGH
+        digitalWrite(RAIN_PIN, HIGH);                          // sets rain pin to HIGH
+        Serial.print("todays high is " + String(todaysHigh));
     }
 
     // if there is sun in the forcast light up sun LED and print forecast to screen
     if (forecast.equalsIgnoreCase(clearsky) || forecast.equalsIgnoreCase(fair) || forecast.equalsIgnoreCase(sunny))
     {
         Serial.println("sun in the forecast today");
-        lcd.setCursor(0, 0);                          // configured so we get a new line for the high temp print
+        lcd.setCursor(0, 0);                                   // configured so we get a new line for the high temp print
         lcd.print("sun in the forecast today");
-        lcd.setCursor(1, 0);                          // configured so we get a new line for the high temp print
+        lcd.setCursor(1, 0);                                   // configured so we get a new line for the high temp print
         lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(SUN_PIN, HIGH);                   // sets sun pin to HIGH
+        digitalWrite(SUN_PIN, HIGH);                           // sets sun pin to HIGH
+        Serial.print("todays high is " + String(todaysHigh));
     }
 
     // if there is clouds in the forcast light up cloud LED and print forecast to screen
     if (forecast.equalsIgnoreCase(cloudy) || forecast.equalsIgnoreCase(mostlycloudy) || forecast.equalsIgnoreCase(partlycloudy))
     {
         Serial.println("cloudy sky in the forecast today");
-        lcd.setCursor(0, 0);                                 // configured so we get a new line for the high temp print
+        lcd.setCursor(0, 0);                                   // configured so we get a new line for the high temp print
         lcd.print("cloudy sky in the forecast today");
-        lcd.setCursor(1, 0);                                 // configured so we get a new line for the high temp print
+        lcd.setCursor(1, 0);                                   // configured so we get a new line for the high temp print
         lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(CLOUD_PIN, HIGH);                        // sets cloud pin to HIGH
+        digitalWrite(CLOUD_PIN, HIGH);                         // sets cloud pin to HIGH
+        Serial.print("todays high is " + String(todaysHigh));
     }
 }
