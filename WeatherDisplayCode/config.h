@@ -3,7 +3,7 @@
 // visit io.adafruit.com if you need to create an account,
 // or if you need your Adafruit IO key.
 #define IO_USERNAME    "danny_dev"
-#define IO_KEY         "aio_HERL32dvEFuMsh2fkzex10MKImQ5"
+#define IO_KEY         "aio_wWAl56vcFKDUq1hgJL3ghlMh6sQ3"
 
 /******************************* WIFI **************************************/
 
@@ -13,8 +13,8 @@
 //   - Feather M0 WiFi -> https://www.adafruit.com/products/3010
 //   - Feather WICED -> https://www.adafruit.com/products/3056
 
-#define WIFI_SSID       "Nick's Galaxy S23 Ultra"
-#define WIFI_PASS       "yqdm283&"
+#define WIFI_SSID       "abcdefg"
+#define WIFI_PASS       "yoobyoob"
 
 // comment out the following two lines if you are using fona or ethernet
 #include "AdafruitIO_WiFi.h"
