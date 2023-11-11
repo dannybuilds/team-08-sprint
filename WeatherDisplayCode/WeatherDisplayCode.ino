@@ -1,10 +1,10 @@
 // Members :  Nick Stites
 //         :  Danny Restrepo
-// Course  :  ECE 211 Intro to Design Processes
 // School  :  Portland State University
-// Date    :  8th November 2023
+// Course  :  ECE 211 Intro to Design Processes
 // Project :  Team 08 Sprint Project
 // Title   :  Wifi Weather Display Team 08
+// Date    :  8th November 2023
 
 #include <Wire.h>
 #include <WiFi.h>
@@ -58,9 +58,8 @@ void setup()
         delay(500);
     }
 
-    // connection status feedback
     Serial.println();
-    Serial.println(io.statusText());
+    Serial.println(io.statusText());  // connection status feedback
 }
 
 
@@ -76,8 +75,8 @@ void loop()
 void handleTemp(AdafruitIO_Data *data)
 {
     Serial.print("received <- ");
-    Serial.println(data->value());   // prints the temperature data to the serial monitor
-    int todaysHigh = data->toInt();  // stores the incoming temperature data as an integer
+    Serial.println(data->value());  // prints the temperature data to the serial monitor
+    todaysHigh = data->toInt();     // stores the incoming temperature data as an integer
 }
 
 
@@ -89,17 +88,17 @@ void handleCondition(AdafruitIO_Data *data)
 
     // the following strings store the varous IFTTT weather report words I've discovered so far
     String rain = String("Rain");
-    String lightrain = String("Light Rain");
-    String rainshower = String("Rain Shower");
     String snow = String("Snow");
-    String cloudy = String("Cloudy");
-    String mostlycloudy = String("Mostly Cloudy");
-    String partlycloudy = String("Partly Cloudy");
-    String clearsky = String("Clear");
     String fair = String("Fair");
     String sunny = String("Sunny");
-    String rainandsnow = String("Rain and Snow");
+    String cloudy = String("Cloudy");
+    String clearsky = String("Clear");
+    String lightrain = String("Light Rain");
+    String rainshower = String("Rain Shower");
     String snowshower = String("Snow Shower");
+    String rainandsnow = String("Rain and Snow");
+    String mostlycloudy = String("Mostly Cloudy");
+    String partlycloudy = String("Partly Cloudy");
 
     // if there is rain in the forcast light up rain LED and print forecast to screen
     if (forecast.equalsIgnoreCase(rain) || forecast.equalsIgnoreCase(lightrain) || forecast.equalsIgnoreCase(rainshower))
