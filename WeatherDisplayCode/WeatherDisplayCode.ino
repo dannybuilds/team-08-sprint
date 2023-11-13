@@ -1,10 +1,12 @@
 // Members :  Nick Stites
 //         :  Danny Restrepo
+//         :  Caleb Monti
+//         :  Jake Milroy
 // School  :  Portland State University
 // Course  :  ECE 211 Intro to Design Processes
 // Project :  Team 08 Sprint Project
 // Title   :  Wifi Weather Display Team 08
-// Date    :  8th November 2023
+// Date    :  11th November 2023
 
 #include <Wire.h>
 #include <WiFi.h>
@@ -22,8 +24,8 @@
 AdafruitIO_Feed *hightemp = io.feed("hightemp");            // sets the 'hightemp' feed
 AdafruitIO_Feed *precipitation = io.feed("precipitation");  // sets the 'precipitation' feed
 
-LiquidCrystal lcd(27, 12, 21, 17, 16, 19);  // sets interface pins
-int todaysHigh = 0;                         // declares and initilizes variable todaysHigh
+LiquidCrystal lcd(27, 12, 19, 16, 17 , 21);  // sets interface pins
+int todaysHigh = 0;                          // declares and initilizes variable todaysHigh
 
 
 void setup()
@@ -34,14 +36,8 @@ void setup()
     pinMode(SUN_PIN, OUTPUT);    // initialize pin as an output
     pinMode(RAIN_PIN, OUTPUT);   // initialize pin as an output
     pinMode(CLOUD_PIN, OUTPUT);  // initialize pin as an output
-
-    lcd.setCursor(0, 0);
-    lcd.print("Hello,");
-    lcd.setCursor(0, 1);
-    lcd.print("From Team 08!");  
-
+   
     Serial.print("Connecting to Adafruit IO");
-
     io.connect();                // connectS to io.adafruit.com
 
     // sets up a message handler for the count feed,
@@ -51,8 +47,8 @@ void setup()
     hightemp->onMessage(handleTemp);
     precipitation->onMessage(handleCondition);
 
-    // waits for a connection
-    while (io.status() < AIO_CONNECTED)
+    
+    while (io.status() < AIO_CONNECTED) // waits for a connection
     {
         Serial.print(".");
         delay(500);
@@ -60,6 +56,8 @@ void setup()
 
     Serial.println();
     Serial.println(io.statusText());  // connection status feedback
+    hightemp->get();
+    precipitation->get();
 }
 
 
@@ -104,35 +102,35 @@ void handleCondition(AdafruitIO_Data *data)
     if (forecast.equalsIgnoreCase(rain) || forecast.equalsIgnoreCase(lightrain) || forecast.equalsIgnoreCase(rainshower))
     {
         Serial.println("rain in the forecast today");
-        lcd.setCursor(0, 0);                                   // configured so we get a new line for the high temp print
-        lcd.print("rain in the forecast today");
-        lcd.setCursor(1, 0);                                   // configured so we get a new line for the high temp print
-        lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(RAIN_PIN, HIGH);                          // sets rain pin to HIGH
         Serial.print("todays high is " + String(todaysHigh));
+        lcd.setCursor(0, 0);                                   
+        lcd.print("Rainy out today");
+        lcd.setCursor(0, 1);                                   
+        lcd.print("The high is " + String(todaysHigh));
+        digitalWrite(RAIN_PIN, HIGH);                          // sets rain pin to HIGH
     }
 
     // if there is sun in the forcast light up sun LED and print forecast to screen
     if (forecast.equalsIgnoreCase(clearsky) || forecast.equalsIgnoreCase(fair) || forecast.equalsIgnoreCase(sunny))
     {
         Serial.println("sun in the forecast today");
-        lcd.setCursor(0, 0);                                   // configured so we get a new line for the high temp print
-        lcd.print("sun in the forecast today");
-        lcd.setCursor(1, 0);                                   // configured so we get a new line for the high temp print
-        lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(SUN_PIN, HIGH);                           // sets sun pin to HIGH
         Serial.print("todays high is " + String(todaysHigh));
+        lcd.setCursor(0, 0);                                   
+        lcd.print("Sunny out today");
+        lcd.setCursor(0, 1);                                   
+        lcd.print("The high is " + String(todaysHigh));
+        digitalWrite(SUN_PIN, HIGH);                           // sets sun pin to HIGH
     }
 
     // if there is clouds in the forcast light up cloud LED and print forecast to screen
     if (forecast.equalsIgnoreCase(cloudy) || forecast.equalsIgnoreCase(mostlycloudy) || forecast.equalsIgnoreCase(partlycloudy))
     {
         Serial.println("cloudy sky in the forecast today");
-        lcd.setCursor(0, 0);                                   // configured so we get a new line for the high temp print
-        lcd.print("cloudy sky in the forecast today");
-        lcd.setCursor(1, 0);                                   // configured so we get a new line for the high temp print
-        lcd.print("todays high is " + String(todaysHigh));
-        digitalWrite(CLOUD_PIN, HIGH);                         // sets cloud pin to HIGH
         Serial.print("todays high is " + String(todaysHigh));
+        lcd.setCursor(0, 0);                                   
+        lcd.print("Cloudy out today");  
+        lcd.setCursor(0, 1);
+        lcd.print("The high is: " + String(todaysHigh));  
+        digitalWrite(CLOUD_PIN, HIGH);                         // sets cloud pin to HIGH
     }
 }
