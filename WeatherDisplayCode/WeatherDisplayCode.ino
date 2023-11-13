@@ -12,8 +12,8 @@
 #include <WiFi.h>
 #include <AdafruitIO.h>
 #include <Adafruit_MQTT.h>
-#include "config.h"
 #include <LiquidCrystal.h>
+#include "config.h"
 
 #define SUN_PIN 14    // drives sun pictogram LED
 #define RAIN_PIN 15   // drives rain pictogram LED
@@ -47,7 +47,6 @@ void setup()
     hightemp->onMessage(handleTemp);
     precipitation->onMessage(handleCondition);
 
-    
     while (io.status() < AIO_CONNECTED) // waits for a connection
     {
         Serial.print(".");
