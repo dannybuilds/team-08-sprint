@@ -120,7 +120,16 @@ void handleCondition(AdafruitIO_Data *data)
 
         // animate(0, todaysHigh);                                   // calls animation module for rain condition
         bigNum.displayBigInt(todaysHigh, 8, 2, false);
-        delay(200);
+        
+        // prints the degree symbol
+        lcd.setCursor(14, 0);                                  // moves cursor to open spot
+        lcd.print((char)0xDF);                                 // uses built-in HD44780 character set
+        
+        // prints Fahrenheit indicator
+        lcd.setCursor(15, 0);                                  // moves cursor to open spot
+        lcd.write(70);                                         // ASCII decimal representation for 'F'
+
+        delay(150);
 
         // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         // lcd.print("Rainy out today");
@@ -139,7 +148,16 @@ void handleCondition(AdafruitIO_Data *data)
 
         // animate(1, todaysHigh);                                   // calls animation module for sun condition
         bigNum.displayBigInt(todaysHigh, 8, 2, false);
-        delay(200);
+        
+        // prints the degree symbol
+        lcd.setCursor(14, 0);                                  // moves cursor to open spot
+        lcd.print((char)0xDF);                                 // uses built-in HD44780 character set
+        
+        // prints Fahrenheit indicator
+        lcd.setCursor(15, 0);                                  // moves cursor to open spot
+        lcd.write(70);                                         // ASCII decimal representation for 'F'
+
+        delay(150);
 
         // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         // lcd.print("Sunny out today");
@@ -158,7 +176,16 @@ void handleCondition(AdafruitIO_Data *data)
 
         // animate(2, todaysHigh);                                   // calls animation module for cloud condition
         bigNum.displayBigInt(todaysHigh, 8, 2, false);
-        delay(200);
+        
+        // prints the degree symbol
+        lcd.setCursor(14, 0);                                  // moves cursor to open spot
+        lcd.print((char)0xDF);                                 // uses built-in HD44780 character set
+        
+        // prints Fahrenheit indicator
+        lcd.setCursor(15, 0);                                  // moves cursor to open spot
+        lcd.write(70);                                         // ASCII decimal representation for 'F'
+
+        delay(150);
 
         // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         // lcd.print("Cloudy out today");

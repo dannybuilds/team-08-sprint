@@ -16,7 +16,7 @@
 /************************ Adafruit IO Config *******************************/
 
 #define IO_USERNAME    "danny_dev"
-#define IO_KEY         "aio_FqzO79UorV0drm1YoHN3Es9Eltvi"
+#define IO_KEY         ""
 
 
 
