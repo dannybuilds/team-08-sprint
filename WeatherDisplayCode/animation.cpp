@@ -5,7 +5,7 @@
 // Title   :  Animations Module for WWD Device
 // Date    :  13th November 2023
 
-#include <LiquidCrystal.h>
+#include "animation.h"
 
 
 

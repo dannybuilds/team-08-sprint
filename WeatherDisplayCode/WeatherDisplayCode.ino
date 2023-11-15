@@ -13,8 +13,9 @@
 #include <AdafruitIO.h>
 #include <Adafruit_MQTT.h>
 #include <LiquidCrystal.h>
-#include "animations.cpp"
+#include "animation.h"
 #include "config.h"
+#include "font.h"
 
 #define SUN_PIN 14    // drives sun pictogram LED
 #define RAIN_PIN 15   // drives rain pictogram LED
@@ -117,7 +118,10 @@ void handleCondition(AdafruitIO_Data *data)
         Serial.println("rain in the forecast today");          // serial message to console for...
         Serial.print("todays high is " + String(todaysHigh));  // ...the purposes of debugging
 
-        animate(0, todaysHigh);                                   // calls animation module for rain condition
+        // animate(0, todaysHigh);                                   // calls animation module for rain condition
+        bigNum.displayBigInt(todaysHigh, 8, 2, false);
+        delay(200);
+
         // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         // lcd.print("Rainy out today");
 
@@ -133,7 +137,10 @@ void handleCondition(AdafruitIO_Data *data)
         Serial.println("sun in the forecast today");           // serial message to console for...
         Serial.print("todays high is " + String(todaysHigh));  // ...the purposes of debugging
 
-        animate(1, todaysHigh);                                   // calls animation module for sun condition
+        // animate(1, todaysHigh);                                   // calls animation module for sun condition
+        bigNum.displayBigInt(todaysHigh, 8, 2, false);
+        delay(200);
+
         // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         // lcd.print("Sunny out today");
 
@@ -149,7 +156,10 @@ void handleCondition(AdafruitIO_Data *data)
         Serial.println("cloudy sky in the forecast today");    // serial message to console for...
         Serial.print("todays high is " + String(todaysHigh));  // ...the purposes of debugging
 
-        animate(2, todaysHigh);                                   // calls animation module for cloud condition
+        // animate(2, todaysHigh);                                   // calls animation module for cloud condition
+        bigNum.displayBigInt(todaysHigh, 8, 2, false);
+        delay(200);
+
         // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         // lcd.print("Cloudy out today");
 

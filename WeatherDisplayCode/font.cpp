@@ -124,7 +124,7 @@ BigFont::BigFont(LiquidCrystal* lcd)
 
 void BigFont::begin()
 {
-    // creates custom characters
+    // creates custom characters, hardware limited to 8 custom characters
     _lcd->createChar(0, leftSide);
     _lcd->createChar(1, upperBar);
     _lcd->createChar(2, rightSide);
@@ -140,10 +140,11 @@ void BigFont::begin()
 /************************************** Methods *********************************************/
 
 // prints an integer to the display using large characters
-// parameters: n - the integer to display
-//             x - column of upper left corner of first large character
-//             digits - number of digits of the integer (specifiying this allows the digit positions to remain constant when printing out ints of various lengths)
-//             leading - sets if leading zeros are printed or not (false = no, true = yes)
+// parameters: 
+//      n - the integer to display
+//      x - column of upper left corner of first large character
+//      digits - number of digits of the integer (constant)
+//      leading - sets if leading zeros are printed or not (false = no, true = yes)
 void BigFont::displayBigInt(int n, byte x, byte digits, bool leading)
 {
     boolean isNegative = false;
@@ -175,16 +176,6 @@ void BigFont::displayBigInt(int n, byte x, byte digits, bool leading)
         {
             displayBigNumber(numString[i], (i * 3) + x);
             leading = true;
-            //if (isNegative)
-            //{
-            // _lcd->setCursor(max(0, (i * 3) - 2 + x), 0);
-                //if(numString[i] == 1)
-                //{
-                //  
-                //}
-                //_lcd->write(45); // "-"
-                //isNegative = false;
-            //}
         }
     }
 }
