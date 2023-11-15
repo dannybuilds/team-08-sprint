@@ -5,7 +5,7 @@
 // School  :  Portland State University
 // Course  :  ECE 211 Intro to Design Processes
 // Project :  Team 08 Sprint Project
-// Title   :  Wifi Weather Display Team 08
+// Title   :  Wifi Weather Display
 // Date    :  11th November 2023
 
 #include <Wire.h>
@@ -24,8 +24,8 @@
 AdafruitIO_Feed *hightemp = io.feed("hightemp");            // sets the 'hightemp' feed
 AdafruitIO_Feed *precipitation = io.feed("precipitation");  // sets the 'precipitation' feed
 
-LiquidCrystal lcd(27, 12, 19, 16, 17 , 21);  // sets interface pins
-int todaysHigh = 0;                          // declares and initilizes variable todaysHigh
+LiquidCrystal lcd(27, 12, 19, 16, 17, 21);  // sets interface pins
+int todaysHigh = 0;                         // declares and initilizes variable todaysHigh
 
 
 void setup()
@@ -47,14 +47,14 @@ void setup()
     hightemp->onMessage(handleTemp);
     precipitation->onMessage(handleCondition);
 
-    while (io.status() < AIO_CONNECTED) // waits for a connection
+    while (io.status() < AIO_CONNECTED)  // waits for a connection
     {
         Serial.print(".");
         delay(500);
     }
 
     Serial.println();
-    Serial.println(io.statusText());  // connection status feedback
+    Serial.println(io.statusText());     // connection status feedback
     hightemp->get();
     precipitation->get();
 }
