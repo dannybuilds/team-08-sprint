@@ -5,7 +5,7 @@
 // School  :  Portland State University
 // Course  :  ECE 211 Intro to Design Processes
 // Project :  Team 08 Sprint Project
-// Title   :  Wifi Weather Display
+// Title   :  Wifi Weather Display (main program)
 // Date    :  11th November 2023
 
 #include <Wire.h>
@@ -13,6 +13,7 @@
 #include <AdafruitIO.h>
 #include <Adafruit_MQTT.h>
 #include <LiquidCrystal.h>
+#include "animations.cpp"
 #include "config.h"
 
 #define SUN_PIN 14    // drives sun pictogram LED
@@ -27,6 +28,8 @@ AdafruitIO_Feed *precipitation = io.feed("precipitation");  // sets the 'precipi
 LiquidCrystal lcd(27, 12, 19, 16, 17, 21);  // sets interface pins
 int todaysHigh = 0;                         // declares and initilizes variable todaysHigh
 
+
+/*************************************** Setup **********************************************/
 
 void setup()
 {
@@ -60,15 +63,18 @@ void setup()
 }
 
 
+/*************************************** Loop ***********************************************/
+
 void loop()
 {
     io.run();
 }
 
 
-// this function is called whenever a feed message
-// is received from Adafruit IO. it was attached to
-// the feed in the setup() function above
+/************************************* Functions ********************************************/
+
+// this function is called whenever a feed message is received from Adafruit IO
+// it was attached to the feed in the setup() function above
 void handleTemp(AdafruitIO_Data *data)
 {
     Serial.print("received <- ");
@@ -79,11 +85,11 @@ void handleTemp(AdafruitIO_Data *data)
 
 void handleCondition(AdafruitIO_Data *data)
 {
-    lcd.clear();  // clears the lcd display
+    lcd.clear();                         // clears the lcd display
 
     String forecast = data->toString();  // stores the incoming weather data in a string
 
-    // the following strings store the varous IFTTT weather report words I've discovered so far
+    // the following strings store the varous IFTTT weather report words we've discovered so far
     String rain = String("Rain");
     String snow = String("Snow");
     String fair = String("Fair");
@@ -100,36 +106,46 @@ void handleCondition(AdafruitIO_Data *data)
     // if there is rain in the forcast light up rain LED and print forecast to screen
     if (forecast.equalsIgnoreCase(rain) || forecast.equalsIgnoreCase(lightrain) || forecast.equalsIgnoreCase(rainshower))
     {
-        Serial.println("rain in the forecast today");
-        Serial.print("todays high is " + String(todaysHigh));
-        lcd.setCursor(0, 0);                                   
+
+        Serial.println("rain in the forecast today");          // serial message to console for...
+        Serial.print("todays high is " + String(todaysHigh));  // ...the purposes of debugging
+
+        lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         lcd.print("Rainy out today");
-        lcd.setCursor(0, 1);                                   
+
+        lcd.setCursor(0, 1);                                   // moves the cursor to the bottom row
         lcd.print("The high is " + String(todaysHigh));
+
         digitalWrite(RAIN_PIN, HIGH);                          // sets rain pin to HIGH
     }
 
     // if there is sun in the forcast light up sun LED and print forecast to screen
     if (forecast.equalsIgnoreCase(clearsky) || forecast.equalsIgnoreCase(fair) || forecast.equalsIgnoreCase(sunny))
     {
-        Serial.println("sun in the forecast today");
-        Serial.print("todays high is " + String(todaysHigh));
-        lcd.setCursor(0, 0);                                   
+        Serial.println("sun in the forecast today");           // serial message to console for...
+        Serial.print("todays high is " + String(todaysHigh));  // ...the purposes of debugging
+
+        lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
         lcd.print("Sunny out today");
-        lcd.setCursor(0, 1);                                   
+
+        lcd.setCursor(0, 1);                                   // moves the cursor to the bottom row
         lcd.print("The high is " + String(todaysHigh));
+
         digitalWrite(SUN_PIN, HIGH);                           // sets sun pin to HIGH
     }
 
     // if there is clouds in the forcast light up cloud LED and print forecast to screen
     if (forecast.equalsIgnoreCase(cloudy) || forecast.equalsIgnoreCase(mostlycloudy) || forecast.equalsIgnoreCase(partlycloudy))
     {
-        Serial.println("cloudy sky in the forecast today");
-        Serial.print("todays high is " + String(todaysHigh));
-        lcd.setCursor(0, 0);                                   
-        lcd.print("Cloudy out today");  
-        lcd.setCursor(0, 1);
-        lcd.print("The high is: " + String(todaysHigh));  
+        Serial.println("cloudy sky in the forecast today");    // serial message to console for...
+        Serial.print("todays high is " + String(todaysHigh));  // ...the purposes of debugging
+
+        lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
+        lcd.print("Cloudy out today");
+
+        lcd.setCursor(0, 1);                                   // moves the cursor to the bottom row
+        lcd.print("The high is: " + String(todaysHigh));
+
         digitalWrite(CLOUD_PIN, HIGH);                         // sets cloud pin to HIGH
     }
 }
