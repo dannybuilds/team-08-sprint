@@ -16,14 +16,14 @@
 /************************ Adafruit IO Config *******************************/
 
 #define IO_USERNAME    "danny_dev"
-#define IO_KEY         ""
+#define IO_KEY         "aio_KdPt61fGAfVTgXFzUo4pAdGIDYlI"
 
 
 
 /******************************* WIFI **************************************/
 
-#define WIFI_SSID       "poobahs (x)"
-#define WIFI_PASS       "still->pepper5palace"
+#define WIFI_SSID       "Violet"
+#define WIFI_PASS       "dcuor3526znzk"
 
 #include "AdafruitIO_WiFi.h"
 AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);

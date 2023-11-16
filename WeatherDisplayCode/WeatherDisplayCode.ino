@@ -13,7 +13,7 @@
 #include <AdafruitIO.h>
 #include <Adafruit_MQTT.h>
 #include <LiquidCrystal.h>
-#include "animation.h"
+#include <esp_system.h>
 #include "config.h"
 #include "font.h"
 
@@ -25,10 +25,13 @@
 
 AdafruitIO_Feed *hightemp = io.feed("hightemp");            // sets the 'hightemp' feed
 AdafruitIO_Feed *precipitation = io.feed("precipitation");  // sets the 'precipitation' feed
+AdafruitIO_Feed *city = io.feed("city");                    // sets the 'city' feed
 
 LiquidCrystal lcd(27, 12, 19, 16, 17, 21);  // sets interface pins
 BigFont bigNum(&lcd);                       // constructs BigFont object, passes to it our LCD object
 int todaysHigh = 0;                         // declares and initilizes variable todaysHigh
+bool resetDevice = false;                   // flag that handles device reset
+String lastCity = "";                       // initializes city designator to nothing
 
 
 
@@ -54,6 +57,7 @@ void setup()
     // received from adafruit io
     hightemp->onMessage(handleTemp);
     precipitation->onMessage(handleCondition);
+    city->onMessage(handleCity);
 
     while (io.status() < AIO_CONNECTED)  // waits for a connection
     {
@@ -65,6 +69,7 @@ void setup()
     Serial.println(io.statusText());     // connection status feedback
     hightemp->get();
     precipitation->get();
+    city->get();
 }
 
 
@@ -73,12 +78,30 @@ void setup()
 
 void loop()
 {
+    resetDevice = false;
+
     io.run();
+
+    if(resetDevice)
+    {
+        ESP.restart();
+    }
 }
 
 
 
 /************************************* Functions ********************************************/
+
+// function to handle the "city" feed message
+void handleCity(AdafruitIO_Data *data)
+{
+    city->get();
+
+    lastCity = data->toString();    // updates the last city variable
+    // handleCondition();              // triggers handling weather condition after updating lastCity
+}
+
+
 
 // this function is called whenever a feed message is received from Adafruit IO
 // it was attached to the feed in the setup() function above
@@ -93,7 +116,25 @@ void handleTemp(AdafruitIO_Data *data)
 
 void handleCondition(AdafruitIO_Data *data)
 {
-    lcd.clear();                         // clears the lcd display
+    // clears the lcd display
+    lcd.clear();
+
+    if (lastCity.equalsIgnoreCase("LosAngeles")) 
+    {
+        hightemp = io.feed("hightemp_LosAngeles");
+        precipitation = io.feed("precipitation_LosAngeles");
+    } 
+    else if (lastCity.equalsIgnoreCase("MountHood")) 
+    {
+        hightemp = io.feed("hightemp_MountHood");
+        precipitation = io.feed("precipitation_MountHood");
+    } 
+    else 
+    {
+        // default feeds or handling for Portland
+        hightemp = io.feed("hightemp");
+        precipitation = io.feed("precipitation");
+    }
 
     String forecast = data->toString();  // stores the incoming weather data in a string
 
@@ -121,6 +162,14 @@ void handleCondition(AdafruitIO_Data *data)
         // animate(0, todaysHigh);                                   // calls animation module for rain condition
         bigNum.displayBigInt(todaysHigh, 8, 2, false);
         
+        // prints intro text
+        lcd.setCursor(0,0);
+        lcd.print("Today:");
+
+        // prints weather condition
+        lcd.setCursor(0,1);
+        lcd.print("Rainy");
+
         // prints the degree symbol
         lcd.setCursor(14, 0);                                  // moves cursor to open spot
         lcd.print((char)0xDF);                                 // uses built-in HD44780 character set
@@ -128,14 +177,6 @@ void handleCondition(AdafruitIO_Data *data)
         // prints Fahrenheit indicator
         lcd.setCursor(15, 0);                                  // moves cursor to open spot
         lcd.write(70);                                         // ASCII decimal representation for 'F'
-
-        delay(150);
-
-        // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
-        // lcd.print("Rainy out today");
-
-        // lcd.setCursor(0, 1);                                   // moves the cursor to the bottom row
-        // lcd.print("The high is " + String(todaysHigh));
 
         digitalWrite(RAIN_PIN, HIGH);                          // sets rain pin to HIGH
     }
@@ -149,6 +190,14 @@ void handleCondition(AdafruitIO_Data *data)
         // animate(1, todaysHigh);                                   // calls animation module for sun condition
         bigNum.displayBigInt(todaysHigh, 8, 2, false);
         
+        // prints intro text
+        lcd.setCursor(0,0);
+        lcd.print("Today:");
+
+        // prints weather condition
+        lcd.setCursor(0,1);
+        lcd.print("Sunny");
+
         // prints the degree symbol
         lcd.setCursor(14, 0);                                  // moves cursor to open spot
         lcd.print((char)0xDF);                                 // uses built-in HD44780 character set
@@ -156,14 +205,6 @@ void handleCondition(AdafruitIO_Data *data)
         // prints Fahrenheit indicator
         lcd.setCursor(15, 0);                                  // moves cursor to open spot
         lcd.write(70);                                         // ASCII decimal representation for 'F'
-
-        delay(150);
-
-        // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
-        // lcd.print("Sunny out today");
-
-        // lcd.setCursor(0, 1);                                   // moves the cursor to the bottom row
-        // lcd.print("The high is " + String(todaysHigh));
 
         digitalWrite(SUN_PIN, HIGH);                           // sets sun pin to HIGH
     }
@@ -177,6 +218,14 @@ void handleCondition(AdafruitIO_Data *data)
         // animate(2, todaysHigh);                                   // calls animation module for cloud condition
         bigNum.displayBigInt(todaysHigh, 8, 2, false);
         
+        // prints intro text
+        lcd.setCursor(0,0);
+        lcd.print("Today:");
+
+        // prints weather condition
+        lcd.setCursor(0,1);
+        lcd.print("Cloudy");
+
         // prints the degree symbol
         lcd.setCursor(14, 0);                                  // moves cursor to open spot
         lcd.print((char)0xDF);                                 // uses built-in HD44780 character set
@@ -184,14 +233,6 @@ void handleCondition(AdafruitIO_Data *data)
         // prints Fahrenheit indicator
         lcd.setCursor(15, 0);                                  // moves cursor to open spot
         lcd.write(70);                                         // ASCII decimal representation for 'F'
-
-        delay(150);
-
-        // lcd.setCursor(0, 0);                                   // ensures the cursor is on the top row
-        // lcd.print("Cloudy out today");
-
-        // lcd.setCursor(0, 1);                                   // moves the cursor to the bottom row
-        // lcd.print("The high is: " + String(todaysHigh));
 
         digitalWrite(CLOUD_PIN, HIGH);                         // sets cloud pin to HIGH
     }
